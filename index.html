@@ -720,13 +720,319 @@
       font-size: .8rem;
     }
 
-    /* ── RESPONSIVE ──────────────────────────────────────── */
+    /* ── RESPONSIVE & MOBILE STYLES ─────────────────────── */
+    .mobile-header {
+      display: none;
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(15, 22, 41, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 90;
+      padding: 0 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mobile-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mobile-logo h1 {
+      font-size: 1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mobile-toggle-btn {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid var(--border-bright);
+      color: var(--text-primary);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0;
+      transition: all .2s;
+    }
+
+    .mobile-toggle-btn:hover, .mobile-toggle-btn:active {
+      background: rgba(59, 130, 246, 0.25);
+      border-color: var(--accent-blue);
+    }
+
+    .mobile-toggle-btn span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background-color: var(--text-primary);
+      border-radius: 2px;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+
+    .sidebar-close-btn {
+      display: none;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 24px;
+      right: 20px;
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 8, 16, 0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 95;
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Floating Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(30, 45, 77, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-bright);
+      color: var(--accent-cyan);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all .3s ease;
+      z-index: 80;
+      box-shadow: 0 4px 16px rgba(0,0,0,.4);
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: var(--accent-blue);
+      color: #fff;
+    }
+
+    /* ── RESPONSIVE MEDIA QUERIES ────────────────────────── */
     @media (max-width: 900px) {
-      .sidebar { transform: translateX(-100%); }
-      .main { margin-left: 0; }
-      .hero { padding: 40px 24px; }
-      .content { padding: 0 24px 60px; }
-      .infra-grid { grid-template-columns: 1fr 1fr; }
+      body {
+        flex-direction: column;
+      }
+
+      .mobile-header {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+        width: min(320px, 85vw);
+        box-shadow: 8px 0 24px rgba(0, 0, 0, 0.5);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-close-btn {
+        display: flex;
+      }
+
+      .sidebar-overlay {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .hero {
+        padding: 48px 20px 40px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 7vw, 2.8rem);
+      }
+
+      .hero p {
+        font-size: 0.98rem;
+        margin-bottom: 28px;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 16px;
+        background: rgba(19, 29, 53, 0.6);
+        padding: 18px 16px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+      }
+
+      .stat-value {
+        font-size: 1.6rem;
+      }
+
+      .content {
+        padding: 0 16px 60px;
+      }
+
+      .section {
+        padding-top: 48px;
+        margin-top: 48px;
+      }
+
+      .section-header {
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .section-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 1.5rem;
+        border-radius: 10px;
+      }
+
+      .section-title {
+        font-size: 1.4rem;
+      }
+
+      .section-subtitle {
+        font-size: 0.82rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .role-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .tank-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .infra-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-box {
+        padding: 20px 16px;
+      }
+
+      .flow-diagram {
+        font-size: 0.72rem;
+        line-height: 1.8;
+      }
+
+      .endpoint {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 14px 14px;
+      }
+
+      .ep-route {
+        width: 100%;
+        order: 2;
+        font-size: 0.78rem;
+        word-break: break-all;
+      }
+
+      .method {
+        order: 1;
+      }
+
+      .ep-auth {
+        order: 1;
+        margin-left: auto;
+      }
+
+      .ep-desc {
+        width: 100%;
+        order: 3;
+        font-size: 0.75rem;
+      }
+
+      .step-module {
+        padding: 20px 16px;
+      }
+
+      .step-module-who {
+        padding-left: 0;
+        margin-top: 4px;
+      }
+
+      .footer {
+        padding: 32px 16px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .status-flow {
+        gap: 8px;
+      }
+
+      .arrow-connector {
+        display: none;
+      }
+
+      .status-badge {
+        width: calc(50% - 4px);
+        justify-content: flex-start;
+        padding: 8px 12px;
+        font-size: 0.72rem;
+      }
+
+      pre {
+        padding: 16px 12px;
+        font-size: 0.75rem;
+      }
     }
 
     /* ── ANIMATIONS ──────────────────────────────────────── */
@@ -744,12 +1050,29 @@
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════════════════════ MOBILE HEADER -->
+<header class="mobile-header">
+  <div class="mobile-logo">
+    <h1>🏭 ERP Metalurg</h1>
+    <span class="version-badge" style="margin-top:0; font-size:.6rem; padding: 2px 6px;">v1.0</span>
+  </div>
+  <button class="mobile-toggle-btn" id="mobileMenuBtn" aria-label="Abrir Menu de Navegação">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</header>
+
+<!-- OVERLAY BACKDROP -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- ═══════════════════════════════════════════════════════════ SIDEBAR -->
-<nav class="sidebar">
+<nav class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <h1>🏭 ERP Metalurg</h1>
     <p>Documentação Técnica</p>
     <div class="version-badge">● v1.0.0 — 2026</div>
+    <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Fechar Menu">✕</button>
   </div>
 
   <div class="nav-section">
@@ -1600,15 +1923,62 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-anon-key</pre>
 
 </main>
 
-<script>
-  // Sidebar active link on scroll
-  const sections = document.querySelectorAll('section[id]');
-  const links = document.querySelectorAll('.nav-link');
+<!-- BOTÃO VOLTAR AO TOPO -->
+<button class="back-to-top" id="backToTopBtn" aria-label="Voltar ao Topo">▲</button>
 
+<script>
+  // ── MOBILE SIDEBAR TOGGLE & BACKDROP ───────────────────
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+  const sidebar = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    sidebarOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    sidebarOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openSidebar);
+  if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+
+  // Fechar sidebar ao clicar em qualquer link da navegação (em mobile)
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        closeSidebar();
+      }
+    });
+  });
+
+  // ── BOTÃO VOLTAR AO TOPO ───────────────────────────────
+  const backToTopBtn = document.getElementById('backToTopBtn');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 350) {
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  });
+
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── SIDEBAR ACTIVE LINK ON SCROLL ──────────────────────
+  const sections = document.querySelectorAll('section[id]');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
+        navLinks.forEach(l => l.classList.remove('active'));
         const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
         if (active) active.classList.add('active');
       }
