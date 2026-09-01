@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ERP Metalurg — Documentação Técnica</title>
+  <meta name="description" content="Documentação técnica completa do ERP Metalurg — Sistema de Gestão de Produção Industrial para linhas de Jateamento e Fosfatização." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #0f1629;
+      --bg-card: #131d35;
+      --bg-card-hover: #1a2644;
+      --bg-code: #0d1117;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+      --accent-orange: #f97316;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #1e2d4d;
+      --border-bright: #2d4070;
+      --sidebar-w: 280px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── SIDEBAR ─────────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-height: 100vh;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: 0; left: 0;
+      overflow-y: auto;
+      z-index: 100;
+      transition: transform .3s ease;
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo h1 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.3;
+    }
+
+    .sidebar-logo p {
+      font-size: .68rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(59,130,246,.15);
+      border: 1px solid rgba(59,130,246,.3);
+      color: var(--accent-blue);
+      font-size: .65rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-top: 10px;
+      letter-spacing: .05em;
+    }
+
+    .nav-section {
+      padding: 12px 0;
+    }
+
+    .nav-section-label {
+      font-size: .6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: var(--text-muted);
+      padding: 8px 24px 4px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 24px;
+      font-size: .82rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: all .2s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-primary);
+      background: rgba(59,130,246,.08);
+      border-left-color: var(--accent-blue);
+    }
+
+    .nav-link .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+
+    /* ── MAIN CONTENT ────────────────────────────────────── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0a0e1a 0%, #0f1d3a 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 64px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(59,130,246,.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(6,182,212,.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.3);
+      color: var(--accent-emerald);
+      font-size: .72rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: .72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-top: 2px;
+    }
+
+    /* ── CONTENT SECTIONS ────────────────────────────────── */
+    .content { padding: 0 64px 80px; }
+
+    .section {
+      padding-top: 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 64px;
+    }
+
+    .section:first-child { border-top: none; margin-top: 0; padding-top: 64px; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .section-icon {
+      font-size: 2rem;
+      width: 56px; height: 56px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .section-subtitle {
+      font-size: .9rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── CARDS ───────────────────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all .25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+      opacity: 0;
+      transition: opacity .25s;
+    }
+
+    .card:hover { background: var(--bg-card-hover); border-color: var(--border-bright); transform: translateY(-2px); }
+    .card:hover::before { opacity: 1; }
+
+    .card-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .card-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .card-desc { font-size: .82rem; color: var(--text-secondary); line-height: 1.6; }
+
+    .card.blue::before  { background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
+    .card.green::before { background: linear-gradient(90deg, var(--accent-emerald), #34d399); }
+    .card.amber::before { background: linear-gradient(90deg, var(--accent-amber), #fbbf24); }
+    .card.red::before   { background: linear-gradient(90deg, var(--accent-red), #f87171); }
+    .card.purple::before{ background: linear-gradient(90deg, var(--accent-purple), #a78bfa); }
+    .card.orange::before{ background: linear-gradient(90deg, var(--accent-orange), #fb923c); }
+
+    /* ── TABLES ──────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; margin-top: 24px; border-radius: 12px; border: 1px solid var(--border); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .84rem;
+    }
+
+    thead th {
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody td {
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-primary);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: rgba(59,130,246,.04); }
+
+    .check { color: var(--accent-emerald); font-weight: 700; }
+    .cross { color: var(--text-muted); }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem;
+      background: rgba(59,130,246,.12);
+      color: var(--accent-cyan);
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+      font-size: .8rem;
+      color: #e2e8f0;
+      line-height: 1.7;
+      margin-top: 16px;
+    }
+
+    pre .kw  { color: #c792ea; }
+    pre .tp  { color: #82aaff; }
+    pre .cm  { color: #546e7a; font-style: italic; }
+    pre .st  { color: #c3e88d; }
+    pre .nm  { color: #f78c6c; }
+
+    /* ── FLOWCHART ───────────────────────────────────────── */
+    .flow-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 14px;
+      padding: 32px;
+      margin-top: 24px;
+      overflow-x: auto;
+    }
+
+    .flow-title {
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--accent-blue);
+      margin-bottom: 24px;
+    }
+
+    .flow-diagram {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem;
+      line-height: 2;
+      color: var(--text-secondary);
+      white-space: pre;
+    }
+
+    .flow-diagram .node { color: var(--text-primary); }
+    .flow-diagram .arrow { color: var(--accent-blue); }
+    .flow-diagram .condition { color: var(--accent-amber); }
+    .flow-diagram .success { color: var(--accent-emerald); }
+    .flow-diagram .error { color: var(--accent-red); }
+
+    /* ── STATUS BADGES ───────────────────────────────────── */
+    .status-flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-top: 24px;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .status-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    .arrow-connector {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      padding: 0 6px;
+    }
+
+    .dot.blue   { background: var(--accent-blue); box-shadow: 0 0 8px rgba(59,130,246,.5); }
+    .dot.cyan   { background: var(--accent-cyan); box-shadow: 0 0 8px rgba(6,182,212,.5); }
+    .dot.amber  { background: var(--accent-amber); box-shadow: 0 0 8px rgba(245,158,11,.5); }
+    .dot.red    { background: var(--accent-red); box-shadow: 0 0 8px rgba(239,68,68,.5); }
+    .dot.green  { background: var(--accent-emerald); box-shadow: 0 0 8px rgba(16,185,129,.5); }
+    .dot.purple { background: var(--accent-purple); box-shadow: 0 0 8px rgba(139,92,246,.5); }
+    .dot.orange { background: var(--accent-orange); box-shadow: 0 0 8px rgba(249,115,22,.5); }
+
+    /* ── RBAC SECTION ────────────────────────────────────── */
+    .role-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .role-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all .2s;
+    }
+
+    .role-card:hover { border-color: var(--border-bright); background: var(--bg-card-hover); }
+
+    .role-tag {
+      display: inline-block;
+      font-size: .68rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    .role-tag.admin    { background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.3); }
+    .role-tag.opjf     { background: rgba(59,130,246,.15); color: #60a5fa; border: 1px solid rgba(59,130,246,.3); }
+    .role-tag.opj      { background: rgba(6,182,212,.15); color: #22d3ee; border: 1px solid rgba(6,182,212,.3); }
+    .role-tag.opf      { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(16,185,129,.3); }
+    .role-tag.prog     { background: rgba(139,92,246,.15); color: #a78bfa; border: 1px solid rgba(139,92,246,.3); }
+    .role-tag.vis      { background: rgba(100,116,139,.15); color: #94a3b8; border: 1px solid rgba(100,116,139,.3); }
+
+    .role-name { font-size: .95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .role-cargo { font-size: .78rem; color: var(--text-muted); margin-bottom: 12px; }
+    .role-perms { font-size: .78rem; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ── TANK TABLE ──────────────────────────────────────── */
+    .tank-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .tank-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all .2s;
+    }
+
+    .tank-card:hover { border-color: var(--border-bright); }
+
+    .tank-name {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tank-num {
+      background: rgba(6,182,212,.15);
+      border: 1px solid rgba(6,182,212,.3);
+      color: var(--accent-cyan);
+      font-size: .65rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .param-list { list-style: none; }
+
+    .param-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .78rem;
+      color: var(--text-secondary);
+      padding: 4px 0;
+    }
+
+    .param-list li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      flex-shrink: 0;
+    }
+
+    .param-unit {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem;
+      color: var(--accent-amber);
+      margin-left: auto;
+    }
+
+    /* ── ENDPOINT LIST ───────────────────────────────────── */
+    .endpoint-group { margin-top: 32px; }
+    .endpoint-group-title {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .endpoint {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: .82rem;
+      transition: all .2s;
+    }
+
+    .endpoint:hover { border-color: var(--border-bright); background: var(--bg-card-hover); }
+
+    .method {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      min-width: 54px;
+      text-align: center;
+    }
+
+    .method.get    { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(16,185,129,.3); }
+    .method.post   { background: rgba(59,130,246,.15); color: #60a5fa; border: 1px solid rgba(59,130,246,.3); }
+    .method.put    { background: rgba(245,158,11,.15); color: #fbbf24; border: 1px solid rgba(245,158,11,.3); }
+    .method.delete { background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.3); }
+
+    .ep-route {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .8rem;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .ep-desc { font-size: .78rem; color: var(--text-secondary); }
+    .ep-auth {
+      font-size: .68rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .ep-auth.admin  { background: rgba(239,68,68,.12); color: #f87171; }
+    .ep-auth.token  { background: rgba(100,116,139,.12); color: #94a3b8; }
+    .ep-auth.op     { background: rgba(59,130,246,.12); color: #60a5fa; }
+    .ep-auth.public { background: rgba(16,185,129,.12); color: #34d399; }
+
+    /* ── STEP GUIDE ──────────────────────────────────────── */
+    .step-guide { margin-top: 24px; }
+    .step-module {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .step-module-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-module-who {
+      font-size: .72rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      padding-left: 34px;
+    }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      gap: 16px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      width: 28px; height: 28px;
+      background: rgba(59,130,246,.15);
+      border: 1px solid rgba(59,130,246,.4);
+      color: var(--accent-blue);
+      font-size: .75rem;
+      font-weight: 700;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .steps li .step-text {
+      font-size: .84rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .steps li .step-text strong { color: var(--text-primary); }
+
+    /* ── INFRA SECTION ───────────────────────────────────── */
+    .infra-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .infra-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .infra-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .infra-name { font-size: .95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .infra-desc { font-size: .78rem; color: var(--text-muted); }
+
+    /* ── ALERT ───────────────────────────────────────────── */
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-top: 16px;
+      font-size: .84rem;
+    }
+
+    .alert.warning {
+      background: rgba(245,158,11,.08);
+      border: 1px solid rgba(245,158,11,.3);
+      color: #fbbf24;
+    }
+
+    .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 40px 64px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: .8rem;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .main { margin-left: 0; }
+      .hero { padding: 40px 24px; }
+      .content { padding: 0 24px 60px; }
+      .infra-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── ANIMATIONS ──────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero > * { animation: fadeUp .6s ease both; }
+    .hero > *:nth-child(1) { animation-delay: .1s; }
+    .hero > *:nth-child(2) { animation-delay: .2s; }
+    .hero > *:nth-child(3) { animation-delay: .3s; }
+    .hero > *:nth-child(4) { animation-delay: .4s; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <h1>🏭 ERP Metalurg</h1>
+    <p>Documentação Técnica</p>
+    <div class="version-badge">● v1.0.0 — 2026</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Visão Geral</div>
+    <a href="#overview" class="nav-link"><span class="nav-icon">🔭</span> Visão do Sistema</a>
+    <a href="#stack" class="nav-link"><span class="nav-icon">🛠️</span> Stack Tecnológico</a>
+    <a href="#architecture" class="nav-link"><span class="nav-icon">🏗️</span> Arquitetura</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Módulos</div>
+    <a href="#modules" class="nav-link"><span class="nav-icon">📦</span> Funcionalidades</a>
+    <a href="#rbac" class="nav-link"><span class="nav-icon">👥</span> Controle de Acesso</a>
+    <a href="#tanks" class="nav-link"><span class="nav-icon">🧪</span> Banhos Químicos</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Técnico</div>
+    <a href="#database" class="nav-link"><span class="nav-icon">🗃️</span> Banco de Dados</a>
+    <a href="#api" class="nav-link"><span class="nav-icon">🌐</span> API REST</a>
+    <a href="#flowcharts" class="nav-link"><span class="nav-icon">📊</span> Fluxogramas</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Operacional</div>
+    <a href="#guide" class="nav-link"><span class="nav-icon">📖</span> Guia de Uso</a>
+    <a href="#infra" class="nav-link"><span class="nav-icon">⚡</span> Infraestrutura</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">🏭 Sistema Industrial</div>
+    <h1>ERP <span>Metalurg</span></h1>
+    <p>Plataforma web full-stack para controle operacional de linhas de tratamento superficial — Jateamento e Fosfatização — em ambientes de manufatura industrial de precisão.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-value">7</span><span class="stat-label">Módulos</span></div>
+      <div class="stat"><span class="stat-value">10</span><span class="stat-label">Tabelas SQL</span></div>
+      <div class="stat"><span class="stat-value">6</span><span class="stat-label">Perfis RBAC</span></div>
+      <div class="stat"><span class="stat-value">11</span><span class="stat-label">Tanques Monit.</span></div>
+      <div class="stat"><span class="stat-value">8</span><span class="stat-label">Status PPCP</span></div>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <!-- ── VISÃO GERAL ────────────────────────────────────── -->
+    <section id="overview" class="section">
+      <div class="section-header">
+        <div class="section-icon">🔭</div>
+        <div>
+          <div class="section-title">Visão Geral do Sistema</div>
+          <div class="section-subtitle">O que o ERP Metalurg controla e gerencia</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card blue">
+          <div class="card-icon">📦</div>
+          <div class="card-title">Programação de Peças (PPCP)</div>
+          <div class="card-desc">Fila de produção com priorização e atualização em tempo real via Server-Sent Events (SSE). Auditoria completa de cada operação.</div>
+        </div>
+        <div class="card green">
+          <div class="card-icon">📝</div>
+          <div class="card-title">Lançamentos de Turno</div>
+          <div class="card-desc">Registro de peças processadas por operador, máquina e linha de produção. Controle de retrabalho e roteamento de peças.</div>
+        </div>
+        <div class="card cyan">
+          <div class="card-icon">🧪</div>
+          <div class="card-title">Controle Químico de Banhos</div>
+          <div class="card-desc">Análises físico-químicas dos 11 tanques das linhas LFOS-0201 e LFOS-0202. Ações corretivas e reanálise pós-reforço.</div>
+        </div>
+        <div class="card red">
+          <div class="card-icon">🔴</div>
+          <div class="card-title">Paradas de Máquina</div>
+          <div class="card-desc">Registro, liberação e cálculo automático de downtime em minutos. Dashboards de disponibilidade e OEE.</div>
+        </div>
+        <div class="card amber">
+          <div class="card-icon">💧</div>
+          <div class="card-title">Consumo de Água</div>
+          <div class="card-desc">Leituras de hidrômetro por turno e linha. Cálculo automático de consumo e controle de desvios com justificativa.</div>
+        </div>
+        <div class="card purple">
+          <div class="card-icon">👥</div>
+          <div class="card-title">Gestão de Usuários</div>
+          <div class="card-desc">Criação, controle e remoção de usuários com RBAC (Role-Based Access Control) de 6 perfis distintos.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;">
+        <div class="card orange" style="max-width:100%;">
+          <div class="card-title">⚡ Modos de Operação</div>
+          <div class="card-desc" style="margin-top:8px; display:flex; gap:40px; flex-wrap:wrap;">
+            <span>🌐 <strong style="color:var(--text-primary)">Cloud:</strong> Supabase (PostgreSQL) + Render + Vercel</span>
+            <span>🖥️ <strong style="color:var(--text-primary)">Desktop Offline:</strong> Electron + JSON local (sem internet)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STACK ──────────────────────────────────────────── -->
+    <section id="stack" class="section">
+      <div class="section-header">
+        <div class="section-icon">🛠️</div>
+        <div>
+          <div class="section-title">Stack Tecnológico</div>
+          <div class="section-subtitle">Tecnologias e versões utilizadas no projeto</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Camada</th><th>Tecnologia</th><th>Versão</th><th>Função</th></tr></thead>
+          <tbody>
+            <tr><td>Backend</td><td><code>Node.js</code></td><td>LTS</td><td>Runtime JavaScript do servidor</td></tr>
+            <tr><td>Backend</td><td><code>Express.js</code></td><td>^4.19</td><td>Framework HTTP/REST API</td></tr>
+            <tr><td>Backend</td><td><code>Supabase</code></td><td>^2.110</td><td>Banco de dados relacional cloud (PostgreSQL)</td></tr>
+            <tr><td>Backend</td><td><code>Firebase</code></td><td>^12.15</td><td>Backend cloud alternativo (Firestore)</td></tr>
+            <tr><td>Backend</td><td><code>bcryptjs</code></td><td>^3.0</td><td>Hash de senhas (12 rounds)</td></tr>
+            <tr><td>Frontend</td><td><code>Next.js</code></td><td>Latest</td><td>Framework React com SSR/App Router</td></tr>
+            <tr><td>Frontend</td><td><code>React</code></td><td>18+</td><td>Biblioteca de UI componentizada</td></tr>
+            <tr><td>Desktop</td><td><code>Electron</code></td><td>^36.9</td><td>Empacotamento offline Windows x64</td></tr>
+            <tr><td>Infra</td><td><code>Render</code></td><td>—</td><td>Hospedagem do backend Node.js</td></tr>
+            <tr><td>Infra</td><td><code>Vercel</code></td><td>—</td><td>Deploy do frontend Next.js</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── ARQUITETURA ────────────────────────────────────── -->
+    <section id="architecture" class="section">
+      <div class="section-header">
+        <div class="section-icon">🏗️</div>
+        <div>
+          <div class="section-title">Arquitetura do Sistema</div>
+          <div class="section-subtitle">Diagrama de camadas e estrutura de diretórios</div>
+        </div>
+      </div>
+
+      <div class="flow-box">
+        <div class="flow-title">Diagrama de Camadas</div>
+        <div class="flow-diagram">
+┌───────────────────────────────────────────────────────────────────┐
+│              CLIENTE  (Browser / Electron App)                     │
+│                   Next.js App Router — porta 3001                  │
+│   MachineStopsChart │ OverviewCharts │ ShiftHistoryTable           │
+└────────────────────────────────┬──────────────────────────────────┘
+                                 │ HTTP REST  /  SSE
+                                 ▼
+┌───────────────────────────────────────────────────────────────────┐
+│             BACKEND — Express.js (porta 3000)                      │
+│                                                                    │
+│  /api/auth    /api/logs    /api/programming    /api/bath           │
+│  /api/machine-stops        /api/water          /api/chemicals      │
+│                                                                    │
+│  ┌───────────────────────────────────────────────────────────┐    │
+│  │            Middleware Auth — RBAC                          │    │
+│  │  requireAuth / requireAdmin / requireFosfatoOperator       │    │
+│  └───────────────────────────────────────────────────────────┘    │
+│                                                                    │
+│  ┌──────────────────────┐   ┌────────────────────────────────┐    │
+│  │   SessionStore       │   │   SSE Broadcast                │    │
+│  │  (token-based)       │   │   broadcastProgrammingUpdate() │    │
+│  └──────────────────────┘   └────────────────────────────────┘    │
+└────────────────────────────────┬──────────────────────────────────┘
+                                 │  Adapter Pattern
+              ┌──────────────────┴──────────────────┐
+              ▼                                      ▼
+┌─────────────────────────┐           ┌──────────────────────────┐
+│   Supabase (CLOUD)      │           │   JSON Local (DESKTOP)   │
+│   PostgreSQL — 10 tabs. │           │   /data/*.json           │
+└─────────────────────────┘           └──────────────────────────┘</div>
+      </div>
+
+      <div class="flow-box" style="margin-top:20px;">
+        <div class="flow-title">Estrutura de Diretórios</div>
+        <pre style="margin-top:0; border:none;">
+focus-feature-metais-main/
+├── <span style="color:#60a5fa">backend/</span>
+│   ├── server.js              <span style="color:#546e7a"># Orquestrador — Express, SSE, SessionStore</span>
+│   ├── db-supabase.js         <span style="color:#546e7a"># Adapter cloud (PostgreSQL)</span>
+│   ├── db-local.js            <span style="color:#546e7a"># Adapter offline (JSON)</span>
+│   ├── session-store.js       <span style="color:#546e7a"># Tokens de sessão persistentes</span>
+│   ├── middleware/auth.js     <span style="color:#546e7a"># RBAC: requireAuth, requireAdmin</span>
+│   └── routes/
+│       ├── auth.js            <span style="color:#546e7a"># Login, logout, registro de usuários</span>
+│       ├── logs.js            <span style="color:#546e7a"># Lançamentos de produção</span>
+│       ├── programming.js     <span style="color:#546e7a"># PPCP + SSE em tempo real</span>
+│       ├── bath.js            <span style="color:#546e7a"># Controle químico de banhos</span>
+│       ├── machine-stops.js   <span style="color:#546e7a"># Paradas de máquina</span>
+│       ├── chemicals.js       <span style="color:#546e7a"># Produtos químicos</span>
+│       └── water.js           <span style="color:#546e7a"># Consumo de água</span>
+│
+├── <span style="color:#60a5fa">frontend/</span>
+│   ├── app/
+│   │   ├── login/             <span style="color:#546e7a"># Tela de autenticação</span>
+│   │   └── dashboard/         <span style="color:#546e7a"># Dashboard principal</span>
+│   └── components/dashboard/
+│       ├── MachineStopsChart.js
+│       ├── OverviewCharts.js
+│       └── ShiftHistoryTable.js
+│
+├── <span style="color:#60a5fa">data/</span>                        <span style="color:#546e7a"># Persistência JSON (modo offline)</span>
+│   ├── bath_parameters.json
+│   ├── piece_programming.json
+│   └── machine_stops.json ...
+│
+└── supabase_schema.sql        <span style="color:#546e7a"># Schema SQL completo (10 tabelas)</span></pre>
+      </div>
+    </section>
+
+    <!-- ── MÓDULOS ─────────────────────────────────────────── -->
+    <section id="modules" class="section">
+      <div class="section-header">
+        <div class="section-icon">📦</div>
+        <div>
+          <div class="section-title">Módulos e Funcionalidades</div>
+          <div class="section-subtitle">Descrição técnica de cada módulo do sistema</div>
+        </div>
+      </div>
+
+      <!-- STATUS FLOW -->
+      <div style="margin-bottom:32px;">
+        <p style="font-size:.9rem; color:var(--text-secondary); margin-bottom:16px;">
+          <strong style="color:var(--text-primary)">Ciclo de Status de uma Peça (PPCP)</strong> — 8 estados do fluxo de produção:
+        </p>
+        <div class="status-flow">
+          <div class="status-badge"><span class="dot blue"></span>fila</div>
+          <span class="arrow-connector">→</span>
+          <div class="status-badge"><span class="dot cyan"></span>pendente</div>
+          <span class="arrow-connector">→</span>
+          <div class="status-badge"><span class="dot amber"></span>em_processo</div>
+          <span class="arrow-connector">→</span>
+          <div class="status-badge"><span class="dot orange"></span>para_jatear</div>
+          <span class="arrow-connector">→</span>
+          <div class="status-badge"><span class="dot red"></span>em_processo_jato</div>
+          <span class="arrow-connector">→</span>
+          <div class="status-badge"><span class="dot purple"></span>para_fosfatizar</div>
+          <span class="arrow-connector">→</span>
+          <div class="status-badge"><span class="dot blue"></span>em_proc._pos_jato</div>
+          <span class="arrow-connector">→</span>
+          <div class="status-badge"><span class="dot green"></span>concluido</div>
+        </div>
+      </div>
+
+      <!-- Lançamentos campos -->
+      <p style="font-size:.9rem; color:var(--text-secondary); margin-bottom:16px;">
+        <strong style="color:var(--text-primary)">Campos de um Lançamento de Produção</strong> — tabela <code>production_logs</code>:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Campo</th><th>Tipo</th><th>Obrigatório</th><th>Descrição</th></tr></thead>
+          <tbody>
+            <tr><td><code>maquina</code></td><td>string</td><td><span class="check">✓</span></td><td>Máquina utilizada no processamento</td></tr>
+            <tr><td><code>codigo</code></td><td>string</td><td><span class="check">✓</span></td><td>Código de referência da peça</td></tr>
+            <tr><td><code>lote</code></td><td>string</td><td><span class="check">✓</span></td><td>Número do lote de produção</td></tr>
+            <tr><td><code>quantidade</code></td><td>int</td><td><span class="check">✓</span></td><td>Quantidade de peças processadas</td></tr>
+            <tr><td><code>linha</code></td><td>string</td><td><span class="cross">—</span></td><td><code>Jateamento</code> ou <code>Fosfatização</code></td></tr>
+            <tr><td><code>retrabalho</code></td><td>boolean</td><td><span class="cross">—</span></td><td>Identifica peça em retrabalho</td></tr>
+            <tr><td><code>vai_jatear</code></td><td>boolean</td><td><span class="cross">—</span></td><td>Peça segue para jateamento após etapa</td></tr>
+            <tr><td><code>ja_jateada</code></td><td>boolean</td><td><span class="cross">—</span></td><td>Peça já passou pelo jateamento</td></tr>
+            <tr><td><code>horario_entrada</code></td><td>string</td><td><span class="cross">—</span></td><td>Hora de início (HH:MM)</td></tr>
+            <tr><td><code>horario_saida</code></td><td>string</td><td><span class="cross">—</span></td><td>Hora de saída (HH:MM)</td></tr>
+            <tr><td><code>diario_de_bordo</code></td><td>text</td><td><span class="cross">—</span></td><td>Observações livres do operador</td></tr>
+            <tr><td><code>free</code></td><td>int</td><td><span class="cross">—</span></td><td>Código de identificação física do operador</td></tr>
+            <tr><td><code>programming_id</code></td><td>int</td><td><span class="cross">—</span></td><td>Vínculo com programação de peça (PPCP)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── RBAC ────────────────────────────────────────────── -->
+    <section id="rbac" class="section">
+      <div class="section-header">
+        <div class="section-icon">👥</div>
+        <div>
+          <div class="section-title">Controle de Acesso por Perfil (RBAC)</div>
+          <div class="section-subtitle">6 perfis com permissões granulares por módulo</div>
+        </div>
+      </div>
+
+      <div class="role-cards">
+        <div class="role-card">
+          <div class="role-tag admin">admin</div>
+          <div class="role-name">Administrador</div>
+          <div class="role-cargo">Gerente de Produção</div>
+          <div class="role-perms">Acesso total: leitura/escrita em todos os módulos, gerenciamento de usuários, edição e exclusão de qualquer registro. Senha: <code>metalurg2026</code></div>
+        </div>
+        <div class="role-card">
+          <div class="role-tag opjf">operador_jato_fosfato</div>
+          <div class="role-name">Operador Geral</div>
+          <div class="role-cargo">Lançamentos em ambas as linhas</div>
+          <div class="role-perms">Lançamentos em Jateamento e Fosfatização, paradas de máquina, análises de banho. Senha: <code>op1234</code></div>
+        </div>
+        <div class="role-card">
+          <div class="role-tag opj">operador_jato</div>
+          <div class="role-name">Operador de Jateamento</div>
+          <div class="role-cargo">Linha de Jato apenas</div>
+          <div class="role-perms">Somente lançamentos e paradas da linha de Jateamento. Senha: <code>op1234</code></div>
+        </div>
+        <div class="role-card">
+          <div class="role-tag opf">operador_fosfato</div>
+          <div class="role-name">Operador de Fosfatização</div>
+          <div class="role-cargo">Linha de Fosfato + Banhos</div>
+          <div class="role-perms">Lançamentos da linha de Fosfatização, análises de banho e paradas. Senha: <code>op1234</code></div>
+        </div>
+        <div class="role-card">
+          <div class="role-tag prog">programador</div>
+          <div class="role-name">Programador de Peças</div>
+          <div class="role-cargo">PPCP exclusivamente</div>
+          <div class="role-perms">Gerência total da fila PPCP (criação, edição, reordenação, exclusão). Não pode registrar paradas. Senha: <code>prog1234</code></div>
+        </div>
+        <div class="role-card">
+          <div class="role-tag vis">visitante</div>
+          <div class="role-name">Visitante Comercial</div>
+          <div class="role-cargo">Somente leitura</div>
+          <div class="role-perms">Visualiza todos os dados mas não pode criar nenhum lançamento ou registro. Senha: <code>vis1234</code></div>
+        </div>
+      </div>
+
+      <div class="alert warning">
+        <span class="alert-icon">⚠️</span>
+        <span><strong>IMPORTANTE:</strong> Altere todas as senhas padrão antes do deploy em ambiente de produção.</span>
+      </div>
+
+      <div class="table-wrap" style="margin-top:24px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Endpoint</th>
+              <th style="text-align:center">admin</th>
+              <th style="text-align:center">op_jf</th>
+              <th style="text-align:center">op_jato</th>
+              <th style="text-align:center">op_fosf</th>
+              <th style="text-align:center">prog</th>
+              <th style="text-align:center">visitante</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>GET /api/logs</code></td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td style="text-align:center;color:#fbbf24;font-size:.75rem">✓ (jato)</td><td style="text-align:center;color:#fbbf24;font-size:.75rem">✓ (fosf)</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td></tr>
+            <tr><td><code>POST /api/logs</code></td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td style="text-align:center;color:#fbbf24;font-size:.75rem">✓ (jato)</td><td style="text-align:center;color:#fbbf24;font-size:.75rem">✓ (fosf)</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+            <tr><td><code>DELETE /api/logs</code></td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+            <tr><td><code>GET /api/programming</code></td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td></tr>
+            <tr><td><code>POST /api/programming</code></td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td></tr>
+            <tr><td><code>DELETE /api/programming</code></td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td></tr>
+            <tr><td><code>POST /api/machine-stops</code></td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+            <tr><td><code>POST /api/bath/logs</code></td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+            <tr><td><code>POST /api/bath/parameters</code></td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+            <tr><td><code>GET /api/auth/users</code></td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── TANQUES ─────────────────────────────────────────── -->
+    <section id="tanks" class="section">
+      <div class="section-header">
+        <div class="section-icon">🧪</div>
+        <div>
+          <div class="section-title">Parâmetros de Banhos Químicos</div>
+          <div class="section-subtitle">Linhas LFOS-0201 e LFOS-0202 — 11 tanques monitorados</div>
+        </div>
+      </div>
+
+      <div class="tank-grid">
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T1</span>Desengraxante</div>
+          <ul class="param-list">
+            <li>Concentração <span class="param-unit">4.5–7.5 %</span></li>
+            <li>Saturação <span class="param-unit">0–50 pt</span></li>
+            <li>Temperatura <span class="param-unit">60–80 °C</span></li>
+            <li>Período de Troca <span class="param-unit">4–120 Meses</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T2</span>Desengraxante</div>
+          <ul class="param-list">
+            <li>Concentração <span class="param-unit">28–39 %</span></li>
+            <li>Saturação <span class="param-unit">0–50 pt</span></li>
+            <li>Temperatura <span class="param-unit">60–80 °C</span></li>
+            <li>Período de Troca <span class="param-unit">4–120 Meses</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T3</span>Enxágue</div>
+          <ul class="param-list">
+            <li>pH <span class="param-unit">6–8 pH</span></li>
+            <li>Período de Troca <span class="param-unit">7 Dias</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T4</span>Enxágue</div>
+          <ul class="param-list">
+            <li>pH <span class="param-unit">6–8 pH</span></li>
+            <li>Período de Troca <span class="param-unit">7 Dias</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T5</span>Ácido Sulfúrico</div>
+          <ul class="param-list">
+            <li>Temperatura <span class="param-unit">20–40 °C</span></li>
+            <li>Acidez <span class="param-unit">5–7 ml</span></li>
+            <li>Teor de Ferro <span class="param-unit">0–30 g/L</span></li>
+            <li>Período de Troca <span class="param-unit">3–90 Meses</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T6</span>Enxágue</div>
+          <ul class="param-list">
+            <li>pH <span class="param-unit">6–8 pH</span></li>
+            <li>Período de Troca <span class="param-unit">7 Dias</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T7</span>Água Temp. Ambiente</div>
+          <ul class="param-list">
+            <li>pH <span class="param-unit">6–8 pH</span></li>
+            <li>Temperatura <span class="param-unit">15–35 °C</span></li>
+            <li>Período de Troca <span class="param-unit">7 Dias</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T8</span>Fosfato Zinco e Cálcio</div>
+          <ul class="param-list">
+            <li>Temperatura <span class="param-unit">65–85 °C</span></li>
+            <li>Acidez Total <span class="param-unit">20–25 ml</span></li>
+            <li>Acelerador <span class="param-unit">0.5–1.5 ml</span></li>
+            <li>Teor de Lama <span class="param-unit">0–5 %</span></li>
+            <li>Período de Troca <span class="param-unit">1–30 Meses</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T9</span>Enxágue</div>
+          <ul class="param-list">
+            <li>pH <span class="param-unit">5–10 pH</span></li>
+            <li>Período de Troca <span class="param-unit">2 Dias</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">T10</span>Água Quente</div>
+          <ul class="param-list">
+            <li>Temperatura <span class="param-unit">70–90 °C</span></li>
+            <li>pH <span class="param-unit">6–8 pH</span></li>
+            <li>Período de Troca <span class="param-unit">7 Dias</span></li>
+          </ul>
+        </div>
+        <div class="tank-card">
+          <div class="tank-name"><span class="tank-num">LG</span>Lavador de Gás</div>
+          <ul class="param-list">
+            <li>pH <span class="param-unit">8–12 pH</span></li>
+            <li>Manômetro Diferencial <span class="param-unit">0–10 mbar</span></li>
+            <li>Período de Troca <span class="param-unit">4–120 Meses</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BANCO DE DADOS ─────────────────────────────────── -->
+    <section id="database" class="section">
+      <div class="section-header">
+        <div class="section-icon">🗃️</div>
+        <div>
+          <div class="section-title">Banco de Dados</div>
+          <div class="section-subtitle">Schema PostgreSQL (Supabase) — 10 tabelas relacionais</div>
+        </div>
+      </div>
+
+      <pre><span class="cm">-- Schema principal do ERP Metalurg (supabase_schema.sql)</span>
+
+<span class="cm">-- 1. Usuários do sistema</span>
+<span class="kw">CREATE TABLE</span> <span class="tp">public.users</span> (
+  id           <span class="tp">SERIAL PRIMARY KEY</span>,
+  username     <span class="tp">VARCHAR</span>(<span class="nm">100</span>) <span class="kw">UNIQUE NOT NULL</span>,
+  password     <span class="tp">VARCHAR</span>(<span class="nm">255</span>) <span class="kw">NOT NULL</span>,  <span class="cm">-- hash bcrypt 12 rounds</span>
+  nome         <span class="tp">VARCHAR</span>(<span class="nm">150</span>),
+  cargo        <span class="tp">VARCHAR</span>(<span class="nm">100</span>),
+  role         <span class="tp">VARCHAR</span>(<span class="nm">50</span>)  <span class="kw">DEFAULT</span> <span class="st">'operador'</span>,
+  free         <span class="tp">INT</span>,          <span class="cm">-- código de identificação físico</span>
+  created_at   <span class="tp">TIMESTAMP WITH TIME ZONE</span>
+);
+
+<span class="cm">-- 2. Lançamentos de produção</span>
+<span class="kw">CREATE TABLE</span> <span class="tp">public.production_logs</span> (
+  id, data, linha, maquina, codigo, lote, quantidade,
+  retrabalho, vai_jatear, ja_jateada, horario_entrada,
+  horario_saida, diario_de_bordo, free, numero_balde,
+  programming_id, created_at
+);
+
+<span class="cm">-- 5. Programação de Peças (PPCP)</span>
+<span class="kw">CREATE TABLE</span> <span class="tp">public.piece_programming</span> (
+  id             <span class="tp">SERIAL PRIMARY KEY</span>,
+  peca           <span class="tp">VARCHAR</span>(<span class="nm">150</span>) <span class="kw">NOT NULL</span>,
+  lote           <span class="tp">VARCHAR</span>(<span class="nm">100</span>),
+  quantidade     <span class="tp">INT</span>,
+  linha          <span class="tp">VARCHAR</span>(<span class="nm">100</span>),
+  data_programada <span class="tp">DATE</span>,
+  status         <span class="tp">VARCHAR</span>(<span class="nm">50</span>) <span class="kw">DEFAULT</span> <span class="st">'fila'</span>,
+  ordem          <span class="tp">INT</span> <span class="kw">DEFAULT</span> <span class="nm">0</span>   <span class="cm">-- posição na fila (menor = primeiro)</span>
+);
+
+<span class="cm">-- 4. Paradas de máquina</span>
+<span class="kw">CREATE TABLE</span> <span class="tp">public.machine_stops</span> (
+  timestamp_inicio <span class="tp">TIMESTAMP WITH TIME ZONE</span>,
+  status           <span class="tp">VARCHAR</span>  <span class="kw">DEFAULT</span> <span class="st">'parada'</span>, <span class="cm">-- 'parada' | 'liberada'</span>
+  timestamp_fim    <span class="tp">TIMESTAMP WITH TIME ZONE</span>,
+  duracao          <span class="tp">INT</span>      <span class="kw">DEFAULT</span> <span class="nm">0</span>        <span class="cm">-- em minutos</span>
+);
+
+<span class="cm">-- 7. Parâmetros de análise dos banhos</span>
+<span class="kw">CREATE TABLE</span> <span class="tp">public.bath_parameters</span> (
+  tank            <span class="tp">VARCHAR</span>(<span class="nm">50</span>)  <span class="kw">NOT NULL</span>,
+  line            <span class="tp">VARCHAR</span>(<span class="nm">50</span>)  <span class="kw">NOT NULL</span>,  <span class="cm">-- 'LFOS-0201' | 'LFOS-0202'</span>
+  min             <span class="tp">NUMERIC</span>,
+  max             <span class="tp">NUMERIC</span>,
+  unit            <span class="tp">VARCHAR</span>(<span class="nm">20</span>),             <span class="cm">-- '%','°C','pH','ml','g/L','mbar'</span>
+  reinforcements  <span class="tp">JSONB</span>                    <span class="cm">-- ações corretivas</span>
+);</pre>
+    </section>
+
+    <!-- ── API ────────────────────────────────────────────── -->
+    <section id="api" class="section">
+      <div class="section-header">
+        <div class="section-icon">🌐</div>
+        <div>
+          <div class="section-title">API REST</div>
+          <div class="section-subtitle">Todos os endpoints — header obrigatório: <code>X-Auth-Token: &lt;token&gt;</code></div>
+        </div>
+      </div>
+
+      <div class="endpoint-group">
+        <div class="endpoint-group-title">🔐 Autenticação</div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/auth/login</span><span class="ep-auth public">Público</span><span class="ep-desc">Autentica e retorna token de sessão</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/auth/logout</span><span class="ep-auth token">Token</span><span class="ep-desc">Invalida a sessão ativa</span></div>
+        <div class="endpoint"><span class="method get">GET</span><span class="ep-route">/api/auth/me</span><span class="ep-auth token">Token</span><span class="ep-desc">Retorna dados do usuário autenticado</span></div>
+        <div class="endpoint"><span class="method get">GET</span><span class="ep-route">/api/auth/users</span><span class="ep-auth admin">Admin</span><span class="ep-desc">Lista todos os usuários (sem senhas)</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/auth/register</span><span class="ep-auth admin">Admin</span><span class="ep-desc">Cadastra novo usuário com hash bcrypt</span></div>
+        <div class="endpoint"><span class="method delete">DEL</span><span class="ep-route">/api/auth/users/:username</span><span class="ep-auth admin">Admin</span><span class="ep-desc">Remove usuário do sistema</span></div>
+      </div>
+
+      <div class="endpoint-group">
+        <div class="endpoint-group-title">📦 Programação de Peças (PPCP)</div>
+        <div class="endpoint"><span class="method get">GET</span><span class="ep-route">/api/programming</span><span class="ep-auth token">Token</span><span class="ep-desc">Lista todas as programações</span></div>
+        <div class="endpoint"><span class="method get">GET</span><span class="ep-route">/api/programming/stream</span><span class="ep-auth token">Token (query)</span><span class="ep-desc">🔴 SSE — atualizações em tempo real</span></div>
+        <div class="endpoint"><span class="method get">GET</span><span class="ep-route">/api/programming/audit</span><span class="ep-auth token">Token</span><span class="ep-desc">Log completo de auditoria</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/programming</span><span class="ep-auth token">Token</span><span class="ep-desc">Cadastra nova programação na fila</span></div>
+        <div class="endpoint"><span class="method put">PUT</span><span class="ep-route">/api/programming/:id/status</span><span class="ep-auth token">Token</span><span class="ep-desc">Atualiza status no fluxo de produção</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/programming/:id/move</span><span class="ep-auth op">Admin/Prog</span><span class="ep-desc">Move peça para cima/baixo na fila</span></div>
+        <div class="endpoint"><span class="method delete">DEL</span><span class="ep-route">/api/programming/:id</span><span class="ep-auth op">Admin/Prog</span><span class="ep-desc">Remove programação da fila</span></div>
+      </div>
+
+      <div class="endpoint-group">
+        <div class="endpoint-group-title">🧪 Controle de Banhos</div>
+        <div class="endpoint"><span class="method get">GET</span><span class="ep-route">/api/bath/parameters</span><span class="ep-auth token">Token</span><span class="ep-desc">Lista parâmetros por tanque e linha</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/bath/parameters</span><span class="ep-auth admin">Admin</span><span class="ep-desc">Cadastra novo parâmetro de análise</span></div>
+        <div class="endpoint"><span class="method put">PUT</span><span class="ep-route">/api/bath/parameters/:id</span><span class="ep-auth admin">Admin</span><span class="ep-desc">Atualiza parâmetro existente</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/bath/logs</span><span class="ep-auth op">Op.Fosf</span><span class="ep-desc">Registra análise físico-química</span></div>
+        <div class="endpoint"><span class="method get">GET</span><span class="ep-route">/api/bath/logs</span><span class="ep-auth token">Token</span><span class="ep-desc">Histórico de análises</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/bath/maintenance</span><span class="ep-auth op">Op.Fosf</span><span class="ep-desc">Registra manutenção de tanque</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/bath/disposals</span><span class="ep-auth op">Op.Fosf</span><span class="ep-desc">Registra troca/descarte de banho</span></div>
+      </div>
+
+      <div class="endpoint-group">
+        <div class="endpoint-group-title">🔴 Paradas de Máquina</div>
+        <div class="endpoint"><span class="method get">GET</span><span class="ep-route">/api/machine-stops</span><span class="ep-auth token">Token</span><span class="ep-desc">Lista paradas (decrescente por ID)</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/machine-stops</span><span class="ep-auth op">Operador</span><span class="ep-desc">Inicia nova parada de máquina</span></div>
+        <div class="endpoint"><span class="method post">POST</span><span class="ep-route">/api/machine-stops/:id/release</span><span class="ep-auth op">Operador</span><span class="ep-desc">Libera máquina + calcula duração (min)</span></div>
+        <div class="endpoint"><span class="method put">PUT</span><span class="ep-route">/api/machine-stops/:id</span><span class="ep-auth admin">Admin</span><span class="ep-desc">Edita dados da parada</span></div>
+        <div class="endpoint"><span class="method delete">DEL</span><span class="ep-route">/api/machine-stops/:id</span><span class="ep-auth admin">Admin</span><span class="ep-desc">Remove registro do histórico</span></div>
+      </div>
+    </section>
+
+    <!-- ── FLUXOGRAMAS ────────────────────────────────────── -->
+    <section id="flowcharts" class="section">
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <div>
+          <div class="section-title">Fluxogramas Operacionais</div>
+          <div class="section-subtitle">5 fluxos principais do sistema</div>
+        </div>
+      </div>
+
+      <div class="flow-box">
+        <div class="flow-title">Fluxo 1 — Autenticação de Usuário</div>
+        <div class="flow-diagram">
+┌──────────────┐
+│ Tela de Login │
+└──────┬───────┘
+       │  username + password
+       ▼
+┌─────────────────────────────────────────────────────────┐
+│  POST /api/auth/login                                    │
+│  1. Busca usuário no banco (Supabase ou JSON local)      │
+│  2. Verifica formato da senha armazenada                 │
+│     ├─ É hash bcrypt? → bcrypt.compare(input, hash)      │
+│     └─ É texto puro?  → migra para hash + valida         │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+              ┌────────┴─────────┐
+              │  Credenciais OK?  │
+              └────────┬─────────┘
+         NÃO ◄─────────┤├──────────► SIM
+          │             │                │
+          ▼             │                ▼
+     HTTP 401           │     crypto.randomBytes(32)
+     "Usuário ou        │     Salva sessão no banco
+     senha incorretos"  │     { token, username, role }
+                        ▼
+               Dashboard principal</div>
+      </div>
+
+      <div class="flow-box" style="margin-top:20px;">
+        <div class="flow-title">Fluxo 2 — PPCP com SSE em Tempo Real</div>
+        <div class="flow-diagram">
+ [Programador]          [Backend]              [Dashboard SSE]
+      │                     │                        │
+      │─POST /programming──►│                        │
+      │  { peca, lote,      │                        │
+      │    qtd, linha,      │                        │
+      │    data }           │                        │
+      │                     │ Calcula max_ordem + 1  │
+      │                     │ Persiste no banco       │
+      │                     │ Registra auditoria     │
+      │                     │──── SSE broadcast ────►│
+      │                     │   data: [lista fila]   │ Atualiza UI
+      │                     │                        │ em tempo real
+      │─POST .../move───────►│                        │
+      │  { direction:up }   │ Troca ordens           │
+      │                     │──── SSE broadcast ────►│ Reordena fila
+      │                     │                        │
+ [Operador]                 │                        │
+      │─PUT .../status──────►│                        │
+      │  { "em_processo" }  │ Atualiza status        │
+      │                     │ Registra auditoria     │
+      │                     │──── SSE broadcast ────►│ Atualiza status</div>
+      </div>
+
+      <div class="flow-box" style="margin-top:20px;">
+        <div class="flow-title">Fluxo 3 — Parada e Liberação de Máquina</div>
+        <div class="flow-diagram">
+[Operador identifica falha]
+         │
+         ▼
+┌────────────────────────────────────────────────┐
+│  POST /api/machine-stops                        │
+│  Obrigatório:  maquina + motivo                 │
+│  Auto-fill:    data_inicio = hoje               │
+│                hora_inicio = HH:MM atual        │
+│  Inferência:   Jato*   → linha = "Jateamento"  │
+│                Linha*  → linha = "Fosfatização"│
+└─────────────────────┬──────────────────────────┘
+                      │ status = 'parada'
+                      │ timestamp_inicio = now()
+                      ▼
+            Dashboard mostra máquina
+            "EM PARADA" com cronômetro
+                      │
+            [Após reparo/solução]
+                      ▼
+┌────────────────────────────────────────────────┐
+│  POST /api/machine-stops/:id/release            │
+│  1. timestamp_fim = now()                       │
+│  2. duracao = (fim - inicio) / 60  → minutos    │
+│  3. status = 'liberada'                         │
+└─────────────────────┬──────────────────────────┘
+                      ▼
+          Histórico com duração total
+          Dados disponíveis para OEE</div>
+      </div>
+
+      <div class="flow-box" style="margin-top:20px;">
+        <div class="flow-title">Fluxo 4 — Análise de Banho com Ação Corretiva</div>
+        <div class="flow-diagram">
+[Operador Fosfato]
+      │ Seleciona: Linha + Tanque + Turno
+      ▼
+GET /api/bath/parameters → carrega faixas de referência
+      │
+      │ Informa valores medidos (Concentração, Temp, pH...)
+      ▼
+┌─────────────────────────────────┐
+│      Valor dentro da faixa?      │
+└───────────┬─────────────────────┘
+ NÃO ◄──────┤├────────► SIM
+  │          │                │
+  ▼          │                ▼
+Exibe ação   │         Registra "Banho OK"
+corretiva    │         POST /api/bath/logs
+  │          │
+  │ Operador aplica reforço químico
+  ▼
+Reanálise após 3 minutos
+  │
+  ▼
+POST /api/bath/logs
+  values + reforcos + valores_apos + reanalysis</div>
+      </div>
+    </section>
+
+    <!-- ── GUIA DE USO ────────────────────────────────────── -->
+    <section id="guide" class="section">
+      <div class="section-header">
+        <div class="section-icon">📖</div>
+        <div>
+          <div class="section-title">Guia de Preenchimento</div>
+          <div class="section-subtitle">Passo a passo para cada módulo do sistema</div>
+        </div>
+      </div>
+
+      <div class="step-guide">
+        <div class="step-module">
+          <div class="step-module-title">🔑 Login no Sistema</div>
+          <div class="step-module-who">Todos os perfis</div>
+          <ol class="steps">
+            <li><span class="step-text">Acesse a URL do sistema (<code>http://localhost:3001</code> em desenvolvimento)</span></li>
+            <li><span class="step-text">Informe o <strong>Usuário</strong> no campo correspondente</span></li>
+            <li><span class="step-text">Informe a <strong>Senha</strong> e clique em <strong>Entrar</strong></span></li>
+            <li><span class="step-text">O sistema redireciona automaticamente para o dashboard conforme seu <strong>perfil de acesso</strong></span></li>
+          </ol>
+        </div>
+
+        <div class="step-module">
+          <div class="step-module-title">📝 Lançamento de Produção de Turno</div>
+          <div class="step-module-who">Quem pode: Operadores (exceto visitantes e programadores)</div>
+          <ol class="steps">
+            <li><span class="step-text">Acesse <strong>Lançamentos de Turno</strong> no dashboard</span></li>
+            <li><span class="step-text">Preencha os obrigatórios: <strong>Máquina</strong>, <strong>Código da Peça</strong>, <strong>Lote</strong>, <strong>Quantidade</strong></span></li>
+            <li><span class="step-text">Configure conforme a situação: <strong>Linha</strong> (Jateamento/Fosfatização), <strong>Retrabalho</strong>, <strong>Vai Jatear</strong>, <strong>Já Jateada</strong></span></li>
+            <li><span class="step-text">Informe <strong>Horário Entrada/Saída</strong>, <strong>Número do Balde</strong> e <strong>Diário de Bordo</strong> (observações livres)</span></li>
+            <li><span class="step-text">Clique em <strong>Salvar Lançamento</strong> — o registro aparece instantaneamente na tabela</span></li>
+          </ol>
+        </div>
+
+        <div class="step-module">
+          <div class="step-module-title">📦 Cadastro de Peça na Fila PPCP</div>
+          <div class="step-module-who">Quem pode: Admin, Programador e operadores</div>
+          <ol class="steps">
+            <li><span class="step-text">Acesse <strong>Programação de Peças</strong></span></li>
+            <li><span class="step-text">Clique em <strong>Nova Programação</strong></span></li>
+            <li><span class="step-text">Preencha: <strong>Peça</strong>, <strong>Lote</strong>, <strong>Quantidade</strong>, <strong>Linha</strong>, <strong>Data Programada</strong></span></li>
+            <li><span class="step-text">Clique em <strong>Adicionar à Fila</strong> — a peça entra automaticamente no final com o próximo número de ordem</span></li>
+            <li><span class="step-text">Para <strong>reordenar</strong> (Admin/Programador): use os botões ▲/▼ na linha da peça</span></li>
+            <li><span class="step-text">Para <strong>atualizar status</strong>: clique no campo de status e selecione o estado no fluxo de produção</span></li>
+          </ol>
+        </div>
+
+        <div class="step-module">
+          <div class="step-module-title">🧪 Registro de Análise de Banho</div>
+          <div class="step-module-who">Quem pode: Operador de Fosfato e Admin</div>
+          <ol class="steps">
+            <li><span class="step-text">Acesse <strong>Controle de Banhos</strong></span></li>
+            <li><span class="step-text">Selecione <strong>Linha</strong> (LFOS-0201 ou LFOS-0202), <strong>Tanque</strong> e <strong>Turno</strong></span></li>
+            <li><span class="step-text">Para cada parâmetro listado, informe o <strong>valor medido</strong> — o sistema sinaliza se está dentro ou fora da faixa</span></li>
+            <li><span class="step-text">Se fora da faixa: leia e aplique a <strong>ação corretiva</strong> prescrita pelo sistema (adicionar produto, diluir, etc.)</span></li>
+            <li><span class="step-text">Registre os <strong>valores após reforço</strong> e a <strong>reanálise</strong> pós-correção</span></li>
+            <li><span class="step-text">Adicione <strong>Diário de Bordo</strong> e <strong>Registro de Análise</strong></span></li>
+            <li><span class="step-text">Clique em <strong>Salvar Análise</strong></span></li>
+          </ol>
+        </div>
+
+        <div class="step-module">
+          <div class="step-module-title">🔴 Registro de Parada de Máquina</div>
+          <div class="step-module-who">Quem pode: Todos os operadores (exceto Programador e Visitante)</div>
+          <ol class="steps">
+            <li><span class="step-text">Acesse <strong>Paradas de Máquina</strong></span></li>
+            <li><span class="step-text">Clique em <strong>Registrar Parada</strong></span></li>
+            <li><span class="step-text">Selecione a <strong>Máquina</strong>, informe o <strong>Motivo</strong> e adicione <strong>Observação</strong> se necessário</span></li>
+            <li><span class="step-text"><strong>Data e hora</strong> são preenchidos automaticamente com o momento atual (editáveis se necessário)</span></li>
+            <li><span class="step-text">Após o reparo: clique em <strong>Liberar Máquina</strong> — o sistema calcula a duração automaticamente em minutos</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── INFRAESTRUTURA ─────────────────────────────────── -->
+    <section id="infra" class="section">
+      <div class="section-header">
+        <div class="section-icon">⚡</div>
+        <div>
+          <div class="section-title">Infraestrutura e Deploy</div>
+          <div class="section-subtitle">Ambientes de execução e comandos</div>
+        </div>
+      </div>
+
+      <div class="infra-grid">
+        <div class="infra-card">
+          <div class="infra-icon">🌐</div>
+          <div class="infra-name">Render</div>
+          <div class="infra-desc">Hospedagem do backend Node.js. Auto-deploy via Git. Health check em <code>/api/health</code></div>
+        </div>
+        <div class="infra-card">
+          <div class="infra-icon">▲</div>
+          <div class="infra-name">Vercel</div>
+          <div class="infra-desc">Deploy do frontend Next.js. SSR automático, CDN global, variáveis de ambiente seguras</div>
+        </div>
+        <div class="infra-card">
+          <div class="infra-icon">🐘</div>
+          <div class="infra-name">Supabase</div>
+          <div class="infra-desc">PostgreSQL gerenciado. 10 tabelas. Execute <code>supabase_schema.sql</code> no SQL Editor</div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;">
+        <p style="font-size:.88rem; font-weight:600; color:var(--text-secondary); margin-bottom:12px; text-transform:uppercase; letter-spacing:.05em; font-size:.72rem;">Comandos de Execução</p>
+        <pre><span class="cm"># Instalar dependências (raiz + frontend)</span>
+npm install
+npm install --prefix frontend
+
+<span class="cm"># Desenvolvimento local (backend porta 3000 + frontend porta 3001)</span>
+npm run dev
+
+<span class="cm"># Apenas backend</span>
+npm run dev:backend
+
+<span class="cm"># Apenas frontend</span>
+npm run dev:frontend
+
+<span class="cm"># Modo desktop offline (Electron)</span>
+npm run electron:dev
+
+<span class="cm"># Build instalador Windows (.exe)</span>
+npm run electron:build
+
+<span class="cm"># Produção (executado pelo Render)</span>
+npm start</pre>
+
+        <pre style="margin-top:16px;"><span class="cm"># .env (raiz do projeto)</span>
+SUPABASE_URL=https://sua-url.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=sua-service-role-key
+PORT=<span class="nm">3000</span>
+
+<span class="cm"># frontend/.env.local</span>
+NEXT_PUBLIC_API_URL=http://localhost:<span class="nm">3000</span>
+NEXT_PUBLIC_SUPABASE_URL=https://sua-url.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-anon-key</pre>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+
+  <footer class="footer">
+    <p>Copyright © 2026 <strong>Metalurg</strong> — ERP de Gestão de Produção Industrial v1.0.0</p>
+    <p style="margin-top:6px; color:var(--text-muted);">Documentação técnica gerada para apresentação ao Gerente de Manufatura</p>
+  </footer>
+
+</main>
+
+<script>
+  // Sidebar active link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
